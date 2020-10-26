@@ -41,9 +41,6 @@ namespace MathForGames
         /// <returns></returns>
         public static Scene GetScene(int index)
         {
-            if (index < 0 || index >= _scenes.Length)
-                return new Scene();
-
             return _scenes[index];
         }
 
@@ -110,7 +107,7 @@ namespace MathForGames
 
             //Copy all scenes except the scene we don't want into the new array
             int j = 0;
-            for(int i = 0; i < _scenes.Length; i++)
+            for(int i = 0; i > _scenes.Length; i++)
             {
                 if (tempArray[i] != scene)
                 {
@@ -140,10 +137,6 @@ namespace MathForGames
             //If the index is not within the range of the the array return
             if (index < 0 || index >= _scenes.Length)
                 return;
-
-            //Call end for the previous scene before changing to the new one
-            if (_scenes[_currentSceneIndex].Started)
-                _scenes[_currentSceneIndex].End();
 
             //Update the current scene index
             _currentSceneIndex = index;
@@ -196,22 +189,25 @@ namespace MathForGames
             Enemy enemyMid = new Enemy(10, 10, Color.GREEN, new Vector2(0, 10), new Vector2(30, 10), '■', ConsoleColor.Green);
             Enemy enemyLow = new Enemy(3, 20, Color.GREEN, new Vector2(0, 20), new Vector2(30, 20), '■', ConsoleColor.Green);
             Player player = new Player(0, 1,Color.BLUE, '@', ConsoleColor.Red);
-            Goal goal = new Goal(30, 20,Color.GREEN, player, 'G', ConsoleColor.Green);
+            Goal goal = new Goal(30, 30,Color.GREEN, player, 'G', ConsoleColor.Green);
 
             //Initialize the enmies starting values
             enemyHigh.Speed = 2;
             enemyMid.Speed = 2;
             enemyLow.Target = player;
+            enemyHigh.Target = player;
+            enemyMid.Target = player;
 
             //Set player's starting speed
             player.Speed = 5;
 
             //Add actors to the scenes
-            scene1.AddActor(Player);
+            scene1.AddActor(player);
             scene1.AddActor(enemyHigh);
             scene1.AddActor(enemyMid);
             scene1.AddActor(enemyLow);
-            scene2.AddActor(Player);
+            scene1.AddActor(goal);
+            scene2.AddActor(player);
             
             //Sets the starting scene index and adds the scenes to the scenes array
             int startingSceneIndex = 0;
@@ -261,7 +257,7 @@ namespace MathForGames
         public void Run()
         {
             //Call start for all objects in game
-
+            Start();
 
             //Loops the game until either the game is set to be over or the window closes
             while(!_gameOver || !Raylib.WindowShouldClose())
@@ -277,7 +273,7 @@ namespace MathForGames
                     Console.ReadKey(true);
             }
 
-            
+            End();
         }
     }
 }

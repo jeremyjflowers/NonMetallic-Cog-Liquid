@@ -57,7 +57,7 @@ namespace MathForGames
         /// <param name="y">Position on the y axis</param>
         /// <param name="icon">The symbol that will appear when drawn</param>
         /// <param name="color">The color of the symbol that will appear when drawn</param>
-        public Actor(char icon = ' ', float y, float x, ConsoleColor color = ConsoleColor.White)
+        public Actor(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
         {
             _rayColor = Color.WHITE;
             _icon = icon;
@@ -74,7 +74,6 @@ namespace MathForGames
         /// <param name="icon">The symbol that will appear when drawn</param>
         /// <param name="color">The color of the symbol that will appear when drawn to the console</param>
         public Actor(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
-            : this(x,y,icon,color)
         {
             _rayColor = rayColor;
         }
@@ -103,7 +102,7 @@ namespace MathForGames
             UpdateFacing();
 
             //Increase position by the current velocity
-            _position += _velocity;
+            _position += _velocity * deltaTime;
         }
 
         public virtual void Draw()
